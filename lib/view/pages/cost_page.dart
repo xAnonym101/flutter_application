@@ -308,6 +308,7 @@ class _CostPageState extends State<CostPage> {
                           selectedCityOrigin != null &&
                           selectedProvinceDestination != null &&
                           selectedCityDestination != null) {
+                        showFullscreenSnackbar(context);
                         homeViewmodel.getCostList(
                           selectedProvinceOrigin.toString(),
                           selectedCityOrigin.cityId.toString(),
@@ -319,13 +320,12 @@ class _CostPageState extends State<CostPage> {
                       } else {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
-                          content: Text(
-                              "Mohon lengkapi semua pilihan terlebih dahulu!"),
+                          content: Text("Mohon lengkapi data diatas."),
                         ));
                       }
                     },
                     child: const Text(
-                      "!Hitung Ongkir!",
+                      "Hitung Ongkir",
                       style: TextStyle(color: Colors.white, fontSize: 14),
                     ),
                     style: ElevatedButton.styleFrom(
@@ -422,7 +422,7 @@ class _CostPageState extends State<CostPage> {
                       return Container(); // This handles any other unknown state
                     }
                   },
-                )
+                ),
               ],
             ),
           ),
@@ -430,4 +430,43 @@ class _CostPageState extends State<CostPage> {
       ),
     );
   }
+}
+
+void showFullscreenSnackbar(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false, // Prevent dismissal by tapping outside
+    builder: (BuildContext context) {
+      Future.delayed(Duration(seconds: 3), () {
+        if (Navigator.of(context, rootNavigator: true).canPop()) {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+      });
+      return Stack(
+        children: [
+          Container(
+            color: Colors.black.withOpacity(0.5), // Semi-transparent background
+          ),
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(
+                  color: Colors.white, // Loading icon color
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  "Mengecek Harga...",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+    },
+  );
 }
