@@ -308,10 +308,6 @@ class _CostPageState extends State<CostPage> {
                           selectedCityOrigin != null &&
                           selectedProvinceDestination != null &&
                           selectedCityDestination != null) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text("Memulai pengecekan harga..."),
-                        ));
                         homeViewmodel.getCostList(
                           selectedProvinceOrigin.toString(),
                           selectedCityOrigin.cityId.toString(),
@@ -364,21 +360,55 @@ class _CostPageState extends State<CostPage> {
                           children: costData.map((costs) {
                             return Card(
                               margin: const EdgeInsets.symmetric(vertical: 8),
-                              surfaceTintColor:
-                                  const Color.fromARGB(255, 17, 0, 255),
+                              color: Colors.blue, // Set the card color to blue
                               child: ListTile(
-                                title:
-                                    Text(costs.service.toString() ?? "Invalid"),
-                                subtitle: Column(
+                                subtitle: Row(
                                   crossAxisAlignment: CrossAxisAlignment
-                                      .start, // Supaya teks rata kiri
+                                      .center, // Center icon vertically
                                   children: [
-                                    Text("Service: ${costs.service ?? "-"}"),
-                                    Text(
-                                        "Cost: Rp${costs.cost![0].value ?? 0}"),
-                                    Text(
-                                        "Estimated day: ${costs.cost![0].etd ?? ""}"),
-                                    // Tambahkan subtitle lainnya sesuai kebutuhan
+                                    Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                      ),
+                                      child: Icon(
+                                        Icons.local_shipping,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                        width:
+                                            12), // Slightly increased spacing between icon and text
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Service: ${costs.service ?? "-"}",
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Cost: Rp${costs.cost![0].value ?? 0}",
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Estimated Delivery: ${costs.cost![0].etd ?? ""}",
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        // Add other subtitles as needed
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
